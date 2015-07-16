@@ -16,7 +16,4 @@ class node:
     def print_node(self, prefix):
         print '  '*prefix,'+',self._data
         for child in self._children:
-	    if type(child) == 'str':
-	        print child
-	    else:
-                child.print_node(prefix+1)
+            child.print_node(prefix+1)

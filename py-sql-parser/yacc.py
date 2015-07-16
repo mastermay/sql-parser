@@ -1,7 +1,7 @@
 import ply.lex as lex
+import ply.yacc as yacc
 import re
 from math import *
-import ply.yacc as yacc
 from node import node
 
 #TOKENS
@@ -115,41 +115,41 @@ def p_query(t):
 
 def p_select(t):
     '''select :   SELECT list FROM table WHERE lst ORDER BY list
-	        | SELECT list FROM table WHERE lst
-	        | SELECT list FROM table ORDER BY list
-	        | SELECT list FROM table '''
+                | SELECT list FROM table WHERE lst
+                | SELECT list FROM table ORDER BY list
+                | SELECT list FROM table '''
     if len(t)==10:
         t[0]=node('QUERY')
-	t[0].add(node('[SELECT]'))
-	t[0].add(t[2])
-	t[0].add(node('[FROM]'))
-	t[0].add(t[4])
-	t[0].add(node('[WHERE]'))
-	t[0].add(t[6])
-	t[0].add(node('[ORDER BY]'))
-	t[0].add(t[9])
+        t[0].add(node('[SELECT]'))
+        t[0].add(t[2])
+        t[0].add(node('[FROM]'))
+        t[0].add(t[4])
+        t[0].add(node('[WHERE]'))
+        t[0].add(t[6])
+        t[0].add(node('[ORDER BY]'))
+        t[0].add(t[9])
     elif len(t)==8:
         t[0]=node('QUERY')
-	t[0].add(node('[SELECT]'))
-	t[0].add(t[2])
-	t[0].add(node('[FROM]'))
-	t[0].add(t[4])
-	t[0].add(node('[ORDER BY]'))
-	t[0].add(t[7])
+        t[0].add(node('[SELECT]'))
+        t[0].add(t[2])
+        t[0].add(node('[FROM]'))
+        t[0].add(t[4])
+        t[0].add(node('[ORDER BY]'))
+        t[0].add(t[7])
     elif len(t)==7:
         t[0]=node('QUERY')
-	t[0].add(node('[SELECT]'))
-	t[0].add(t[2])
-	t[0].add(node('[FROM]'))
-	t[0].add(t[4])
-	t[0].add(node('[WHERE]'))
-	t[0].add(t[6])
+        t[0].add(node('[SELECT]'))
+        t[0].add(t[2])
+        t[0].add(node('[FROM]'))
+        t[0].add(t[4])
+        t[0].add(node('[WHERE]'))
+        t[0].add(t[6])
     else:
-	t[0]=node('QUERY')
-	t[0].add(node('[SELECT]'))
-	t[0].add(t[2])
-	t[0].add(node('[FROM]'))
-	t[0].add(t[4])
+        t[0]=node('QUERY')
+        t[0].add(node('[SELECT]'))
+        t[0].add(t[2])
+        t[0].add(node('[FROM]'))
+        t[0].add(t[4])
 
 def p_table(t):
     '''table : NAME
@@ -159,24 +159,24 @@ def p_table(t):
             | table COMMA table'''
     if len(t)==2:
         t[0]=node('[TABLE]')
-	t[0].add(node(t[1]))
+        t[0].add(node(t[1]))
     elif t[2]=='AS' and isinstance(t[1], node):
-	t[0]=node('[TABLE]')
-	t[0].add(t[1])
-	t[0].add(node('AS'))
-	t[0].add(node(t[3]))
+        t[0]=node('[TABLE]')
+        t[0].add(t[1])
+        t[0].add(node('AS'))
+        t[0].add(node(t[3]))
     elif t[2]=='AS' and not isinstance(t[1], node):
-	t[0]=node('[TABLE]')
-	t[0].add(node(t[1]))
-	t[0].add(node('AS'))
-	t[0].add(node(t[3]))
+        t[0]=node('[TABLE]')
+        t[0].add(node(t[1]))
+        t[0].add(node('AS'))
+        t[0].add(node(t[3]))
     elif t[2]==',':
-	t[0]=node('[TABLES]')
-	t[0].add(t[1])
-	t[0].add(t[3])
+        t[0]=node('[TABLES]')
+        t[0].add(t[1])
+        t[0].add(t[3])
     else :
-	t[0]=node('[TABLE]')
-	t[0].add(t[2])
+        t[0]=node('[TABLE]')
+        t[0].add(t[2])
         
 
 def p_lst(t):
@@ -195,46 +195,46 @@ def p_lst(t):
     
     if len(t)==2:
         t[0]=node('[CONDITION]')
-	t[0].add(t[1])
+        t[0].add(t[1])
     elif t[2]==',':
-	t[0]=node('[CONDITIONS]')
-	t[0].add(t[1])
-	t[0].add(t[3])
+        t[0]=node('[CONDITIONS]')
+        t[0].add(t[1])
+        t[0].add(t[3])
     elif t[2]=='AND':
-	t[0]=node('[CONDITIONS]')
-	t[0].add(t[1])
-	t[0].add(node('[AND]'))
-	t[0].add(t[3])
+        t[0]=node('[CONDITIONS]')
+        t[0].add(t[1])
+        t[0].add(node('[AND]'))
+        t[0].add(t[3])
     elif t[2]=='OR':
-	t[0]=node('[CONDITIONS]')
-	t[0].add(t[1])
-	t[0].add(node('[OR]'))
-	t[0].add(t[3])
+        t[0]=node('[CONDITIONS]')
+        t[0].add(t[1])
+        t[0].add(node('[OR]'))
+        t[0].add(t[3])
     elif t[2]=='BETWEEN':
         temp='%s >= %s & %s <= %s'%(t[1],str(t[3]),t[1],str(t[5]))
-	t[0]=node('[CONDITION]')
-	t[0].add(node('[TERM]'))
-	t[0].add(node(temp))
+        t[0]=node('[CONDITION]')
+        t[0].add(node('[TERM]'))
+        t[0].add(node(temp))
     elif t[2]=='IN':
-	t[0]=node('[CONDITION]')
-	t[0].add(node(t[1]))
-	t[0].add(node('[IN]'))
-	t[0].add(t[4])
+        t[0]=node('[CONDITION]')
+        t[0].add(node(t[1]))
+        t[0].add(node('[IN]'))
+        t[0].add(t[4])
     elif t[2]=='<' and len(t)==4:
         temp='%s < %s'%(str(t[1]),str(t[3]))
-	t[0]=node('[CONDITION]')
-	t[0].add(node('[TERM]'))
-	t[0].add(node(temp))
+    t[0]=node('[CONDITION]')
+    t[0].add(node('[TERM]'))
+    t[0].add(node(temp))
     elif t[2]=='=' and len(t)==4:
         temp='%s = %s'%(str(t[1]),str(t[3]))
-	t[0]=node('[CONDITION]')
-	t[0].add(node('[TERM]'))
-	t[0].add(node(temp))
+    t[0]=node('[CONDITION]')
+    t[0].add(node('[TERM]'))
+    t[0].add(node(temp))
     elif t[2]=='>' and len(t)==4:
         temp='%s > %s'%(str(t[1]),str(t[3]))
-	t[0]=node('[CONDITION]')
-	t[0].add(node('[TERM]'))
-	t[0].add(node(temp))
+    t[0]=node('[CONDITION]')
+    t[0].add(node('[TERM]'))
+    t[0].add(node(temp))
     else:
         t[0]=node('')
         
@@ -259,12 +259,12 @@ def p_condition(t):
     if isinstance(t[1], node) :
         t[0].add(t[1])
     else :
-	t[0].add(node(str(t[1])))
+    t[0].add(node(str(t[1])))
     t[0].add(node(t[2]))
     if isinstance(t[3], node) :
         t[0].add(t[3])
     else :
-	t[0].add(node(str(t[3])))
+        t[0].add(node(str(t[3])))
 
 def p_agg(t):
     ''' agg : SUM LP NAME RP
@@ -277,7 +277,7 @@ def p_agg(t):
 
 def p_list(t):
     ''' list : '*'
-	     | NAME
+             | NAME
              | NAME DOT NAME 
              | list COMMA list
              | list AND NAME
@@ -285,15 +285,15 @@ def p_list(t):
              | agg '''
     if len(t)==2:
         t[0]=node('[FIELD]')
-	t[0].add(node(t[1]))
+        t[0].add(node(t[1]))
     elif t[2]==',':
-	t[0]=node('[FIELDS]')
-	t[0].add(t[1])
-	t[0].add(t[3])
+        t[0]=node('[FIELDS]')
+        t[0].add(t[1])
+        t[0].add(t[3])
     else:
         temp='%s.%s'%(t[1],t[3])
-	t[0]=node('[FIELD]')
-	t[0].add(node(temp))
+        t[0]=node('[FIELD]')
+        t[0].add(node(temp))
     
 def p_error(t):
     print("Syntax error at '%s'" % t.value)
